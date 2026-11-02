@@ -19,7 +19,12 @@ export function createTransport(api,db,getUser,getOffset=()=>0){
    // cache before the first updater call, making an existing room appear null.
    let stop;
    try {
-   await new Promise((resolve,reject)=>{stop=api.onValue(api.ref(db,'freeRooms/'+key),resolve,reject);});
+   const initial=await new Promise((resolve,reject)=>{stop=api.onValue(api.ref(db,'freeRooms/'+key),resolve,reject);});
+   let departedHost;
+   if(d.action==='takeover'){
+    departedHost=initial.val()?.owner;
+    if(!departedHost||(await api.get(api.ref(db,'freePresence/'+key+'/'+departedHost))).val()!==false)throw Error('The host is still connected.');
+   }
    if(d.action==='end'){
     const snapshot=await api.get(api.ref(db,'freeRooms/'+key));
     if(snapshot.val()?.owner!==uid)throw Error('Only the host can end the room.');
@@ -30,7 +35,8 @@ export function createTransport(api,db,getUser,getOffset=()=>0){
     try{
      if(d.action==='create'){if(s)throw Error('That code and password are in use. Choose another code.');return createRoom(uid,d.name,d.settings,now);}
      if(d.action==='join')return joinRoom(s,uid,d.name,now);
-     const next=applyAction(s,uid,d.action,d,now,()=>randomSeed);
+     if(d.action==='takeover'&&s?.owner!==departedHost)throw Error('The host changed. Please try again.');
+     const next=applyAction(s,uid,d.action,{...d,hostOffline:d.action==='takeover'},now,()=>randomSeed);
      return d.action==='leave'&&!Object.values(next.players).some(p=>p.active)?null:next;
     }catch(e){failure=e.message;return;}
    },{applyLocally:false});

@@ -1,5 +1,17 @@
 # Agent handoff — free edition
 
+## Current update
+
+This folder includes the November 2 improvements after the initial free edition. A root index.html redirects branch-based GitHub Pages to public/ while preserving invite queries. `.nojekyll` is included; the existing public-only Actions workflow also works. User will upload an updated ZIP themselves; GitHub is not authenticated and no repository edits have been made by the agent.
+
+New registry: public/game-catalog.js exports game metadata, normalized settings, and 18 Would You Rather pairs. room-model.js uses it. The new game has `poll` and `results` phases; everyone votes once, majority voters gain one point, ties reward both sides, and missing votes receive no points. Results expire after 10 seconds. `choose` and `next` reject stale turn revisions. Leaving during a poll preserves remaining players' votes when at least two remain.
+
+Host actions: lobby, configure, reset-scores, takeover. Configure/reset require the lobby and host ownership; UI confirms interrupting a turn or resetting scores. Existing player seats/scores remain during a game switch, unless scores are explicitly reset. Max cannot be less than retained membership. Offline-host recovery appears after 20 seconds of a false presence record. Transport reads the host's actual presence and binds takeover to that owner so a retry cannot take over from a different new host. This is still client-authoritative trusted-room logic.
+
+App improvements: live presence labels, cross-host QR code extraction without navigation, cancellation checks around asynchronous camera startup, a selectable invite URL fallback, button restoration after actions, offline actions blocked, and transport path/listener cleanup after exit. Additional layout is in improvements.css. Existing database rules support these states and remain unchanged. No billing or Functions required.
+
+27 automated checks currently pass. Live/browser verification of this update is recorded in FIREBASE-STATUS.md after completion. Earlier verification paragraphs below refer to the first release. For updates, maintain registry/engine/UI/tests/docs together.
+
 Date: 2026-11-02. This edition supersedes the earlier Cloud Functions implementation. User explicitly requested free-only, a maximum of 20 people, and room data deletion when a room ends. Do not suggest Blaze or deploy paid services for this edition.
 
 Firebase project `partyroom-ba907`, web app `PartyRoom Web`, anonymous sign-in enabled, RTDB `https://partyroom-ba907-default-rtdb.firebaseio.com`, us-central1. Configuration is in public/firebase-config.js and .firebaserc. Use database.rules.json from this folder. Earlier rules for rooms/state are incompatible with this edition.

@@ -1,5 +1,11 @@
 # PartyRoom — Free edition
 
+## Updated features
+
+Three games: Dice Roll, Truth or Dare, and **Would You Rather** group polls. The host can use **Game & settings** to return to the lobby and switch games without recreating the room, or **Reset scores** to start a fresh leaderboard. Offline players are labeled; after the host has been offline for 20 seconds, another member can choose **Become the host**. Game data still deletes when the room ends or the last person explicitly leaves. Rooms remain capped at 20.
+
+For your GitHub Pages site, follow **UPDATE-GITHUB.md**. The new root index.html opens the actual game rather than the README and preserves invite codes.
+
 **Use this edition. No Cloud Functions, billing account, or Blaze upgrade is required.** It uses anonymous Firebase Authentication, Realtime Database transactions, and static hosting. Your configured Firebase project is `partyroom-ba907`.
 
 ## Room size and cleanup

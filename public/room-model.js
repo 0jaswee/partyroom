@@ -1,8 +1,7 @@
 import {act} from './game-engine.js';
+import {normalizeSettings} from './game-catalog.js';
 export function settingsFrom(v={}) {
- const s={game:v.game==='truth'?'truth':'dice',max:Number(v.max??8),timer:Number(v.timer??30),extra:Number(v.extra??6),cancel:!!v.cancel,majority:!!v.majority,tie:v.tie==='dare'?'dare':'truth'};
- for(const [k,min,max] of [['max',2,20],['timer',10,120],['extra',1,6]])if(!Number.isInteger(s[k])||s[k]<min||s[k]>max)throw Error('Check your room settings.');
- return s;
+ return normalizeSettings(v);
 }
 export function cleanName(name){name=String(name||'').trim();if(!name||name.length>24)throw Error('Enter a name of 1–24 characters.');return name;}
 export function createRoom(uid,name,settings,now){return {owner:uid,created:now,seatCount:1,settings:settingsFrom(settings),phase:'lobby',round:0,players:{[uid]:{name:cleanName(name),active:true,joined:now,score:0}}};}

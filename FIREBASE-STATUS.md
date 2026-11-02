@@ -1,5 +1,9 @@
 # Deployment status — free edition
 
+## Updated ZIP handoff
+
+This updated package adds Would You Rather, host settings/score reset, offline-host recovery, and GitHub Pages entry fixes. It has 27 passing automated tests and passed live Firebase integration checks in a temporary preview. The latest package has **not** been uploaded to the user's GitHub repository or released to the main Firebase Hosting URL. Upload its contents following UPDATE-GITHUB.md. The deployment history below describes the earlier free release, not publication of these new changes.
+
 Published 2026-11-02 from Google Cloud Shell, with the user's approval to authorize deployment.
 
 - Live website: https://partyroom-ba907.web.app
